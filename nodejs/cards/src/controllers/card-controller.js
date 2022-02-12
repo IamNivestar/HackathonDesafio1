@@ -63,7 +63,7 @@ api.remove = (request, response)=>{
     })
 }
 
-api.find = (request, response)=>{ //encontrar unico registro pelo id
+api.find = (request, response)=>{ //encontrar unico registro pelo id findOne
     const param = request.params.id 
     neDB.find({_id: param}).exec((exception, card) =>{
         if(exception){
@@ -73,12 +73,25 @@ api.find = (request, response)=>{ //encontrar unico registro pelo id
             response.status(exception.status|400)
             response.json({'mensagem': setence})
         }
+        else if(card == null){
+            const setence = "Erro card não encontrado"
+            console.error(setence, exception)
+
+            response.status(404)
+            response.json({'mensagem': setence})
+        }
         console.log('Card carregado:, ', card)
         response.status(200)
         response.json(card)
     })
-}
-api.find = (request, response)=>{ //ordenar e paginar arquivos
+} 
+
+//observacao: durante os testes o postman de um bug pelo fato de implementarmos duas funções find,
+// se eu comentar a rota de sorting and page, a funcao find one funciona perfeitamente!
+
+
+//      /*
+api.find = (request, response)=>{ //ordenar e paginar arquivos  //sort and find
     //optei pela ordenacao pelo nome pois os id's sao gerados diferente do java
     //skip(2) = pular os dois registros, començando na segunda pagina
     neDB.find({}).sort({customerName:1}).skip(2).limit(2).exec(function (exception, cards) { //limit(2) indica que o limite de cards carregados por pagina é 2
@@ -94,5 +107,6 @@ api.find = (request, response)=>{ //ordenar e paginar arquivos
         response.json(cards)
     });
 }
+//     */
 
 module.exports = api 
