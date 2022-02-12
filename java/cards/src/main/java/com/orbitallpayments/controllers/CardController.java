@@ -75,12 +75,12 @@ public class CardController {
         Card saveCard = cardService.save(new_card);
         return ResponseEntity.status(HttpStatus.OK).body(saveCard);
     }
-
+    /*
     @GetMapping
     public ResponseEntity<Pageable<Card>> findAll2(@PageableDefault(page=0, size=10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
         List<Card> cards = cardService.findAll(pageable);
         return ResponseEntity.ok(cards);
-    }
+    }*/
 
 
 }
