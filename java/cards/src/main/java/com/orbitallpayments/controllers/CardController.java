@@ -3,7 +3,11 @@ package com.orbitallpayments.controllers;
 import com.orbitallpayments.domain.Card;
 import com.orbitallpayments.repositories.CardRepository;
 import com.orbitallpayments.services.CardService;
+import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +63,7 @@ public class CardController {
         if(!fetchedCard.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(fetchedCard.get());
         }
-        var new_card = fetchedCard.get();
+        var new_card = fetchedCard.get(); //realizando atualizacao de valor por valor
         new_card.setCardNumber(card.getCardNumber());
         new_card.setEmbossName(card.getEmbossName());
         new_card.setCustomerName(card.getCustomerName());
@@ -67,9 +71,17 @@ public class CardController {
         new_card.setMotherName(card.getMotherName());
         new_card.setAddress(card.getAddress());
         new_card.setCity(card.getCity());
+        // o id n é atualizado
         Card saveCard = cardService.save(new_card);
         return ResponseEntity.status(HttpStatus.OK).body(saveCard);
     }
+
+    @GetMapping
+    public ResponseEntity<Pageable<Card>> findAll2(@PageableDefault(page=0, size=10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        List<Card> cards = cardService.findAll(pageable);
+        return ResponseEntity.ok(cards);
+    }
+
 
 }
 
