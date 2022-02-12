@@ -78,7 +78,7 @@ api.find = (request, response)=>{ //encontrar unico registro pelo id
         response.json(card)
     })
 }
-api.find = (request, response)=>{ //encontrar unico registro pelo id
+api.find = (request, response)=>{ //ordenar e paginar arquivos
     const param = request.body
     neDB.find({}).sort({customerName:1}).limit(2).exec(function (exception, cards) { //limit(2) indica que o limite de cards carregados por pagina é 2
         if(exception){

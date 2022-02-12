@@ -9,6 +9,6 @@ module.exports = (app) =>{
         .get(api.find)
         .put(api.update)
         .delete(api.remove)
-    app.route('/cards/paginationAndSorting')
+    app.route('/cards/paginationAndSorting') //precisei criar separado
         .get(api.find)
 }
